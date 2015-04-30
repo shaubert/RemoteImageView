@@ -1,5 +1,6 @@
 package com.makeramen;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -204,6 +205,7 @@ public class RoundedImageView extends ImageViewWithForeground {
     }
 
     @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     private Drawable resolveResource() {
         Resources rsrc = getResources();
         if (rsrc == null) {

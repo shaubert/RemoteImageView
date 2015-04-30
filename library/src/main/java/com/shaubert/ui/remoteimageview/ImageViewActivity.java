@@ -1,5 +1,6 @@
 package com.shaubert.ui.remoteimageview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.app.SharedElementCallback;
 import android.graphics.Bitmap;
@@ -26,6 +27,7 @@ public class ImageViewActivity extends FullscreenActivity {
     private PhotoViewAttacher photoViewAttacher;
 
     @Override
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

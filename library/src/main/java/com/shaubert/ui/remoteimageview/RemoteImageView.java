@@ -236,6 +236,7 @@ public class RemoteImageView extends OptimizedImageView {
         }
     }
 
+    @SuppressLint("NewApi")
     public void setImageUrl(String url) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             setTransitionName(url);

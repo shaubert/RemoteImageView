@@ -1,5 +1,6 @@
 package com.shaubert.ui.remoteimageview;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -135,6 +136,7 @@ public class ImageViewWithForeground extends ImageView {
     }
 
     @Override
+    @SuppressLint("NewApi")
     public void draw(@NonNull Canvas canvas) {
         super.draw(canvas);
 

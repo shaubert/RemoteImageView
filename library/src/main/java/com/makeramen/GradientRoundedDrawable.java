@@ -1,5 +1,6 @@
 package com.makeramen;
 
+import android.annotation.SuppressLint;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.ColorDrawable;
@@ -15,6 +16,7 @@ public class GradientRoundedDrawable extends AbstractRoundedDrawable {
 
     private GradientDrawable gradientDrawable;
 
+    @SuppressLint("NewApi")
     public static GradientDrawable convert(ColorDrawable colorDrawable) {
         GradientDrawable gradientDrawable = new GradientDrawable();
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
