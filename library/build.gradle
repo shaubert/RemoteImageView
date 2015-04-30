@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+
+repositories {
+    maven{url "https://github.com/shaubert/maven-repo/raw/master/releases"}
+}
+
+dependencies {
+    compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.github.chrisbanes.photoview:library:1.2.4'
+}
+
+android {
+    compileSdkVersion 22
+    buildToolsVersion '22.0.1'
+
+    defaultConfig {
+        minSdkVersion 4
+        targetSdkVersion 22
+    }
+}
+
+apply from: '../maven_push.gradle'

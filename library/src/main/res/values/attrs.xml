@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="RoundedImageView">
+        <attr name="corner_radius" format="dimension" />
+        <attr name="corner_radius_lt" format="dimension" />
+        <attr name="corner_radius_rt" format="dimension" />
+        <attr name="corner_radius_rb" format="dimension" />
+        <attr name="corner_radius_lb" format="dimension" />
+        <attr name="border_width" format="dimension" />
+        <attr name="border_color" format="color" />
+        <attr name="mutate_background" format="boolean" />
+        <attr name="oval" format="boolean" />
+        <attr name="android:scaleType" />
+    </declare-styleable>
+
+    <declare-styleable name="ImageViewWithForeground">
+        <attr name="dontPressWithParent" format="boolean"/>
+        <attr name="foreground" format="reference|color"/>
+        <attr name="foregroundGravity">
+            <flag name="top" value="0x30" />
+            <flag name="bottom" value="0x50" />
+            <flag name="left" value="0x03" />
+            <flag name="right" value="0x05" />
+            <flag name="center_vertical" value="0x10" />
+            <flag name="fill_vertical" value="0x70" />
+            <flag name="center_horizontal" value="0x01" />
+            <flag name="fill_horizontal" value="0x07" />
+            <flag name="center" value="0x11" />
+            <flag name="fill" value="0x77" />
+            <flag name="clip_vertical" value="0x80" />
+            <flag name="clip_horizontal" value="0x08" />
+        </attr>
+        <attr name="foregroundInsidePadding" format="boolean"/>
+    </declare-styleable>
+</resources>
