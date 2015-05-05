@@ -110,7 +110,7 @@ afterEvaluate { project ->
         source = android.sourceSets.main.java.srcDirs
         classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
     }
-
+    
     task androidJavadocsJar(type: Jar, dependsOn: androidJavadocs) {
         classifier = 'javadoc'
         from androidJavadocs.destinationDir
@@ -123,6 +123,6 @@ afterEvaluate { project ->
 
     artifacts {
         archives androidSourcesJar
-        archives androidJavadocsJar
+//        archives androidJavadocsJar
     }
 }

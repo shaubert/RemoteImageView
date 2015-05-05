@@ -1,20 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <declare-styleable name="RemoteImageView">
+        <attr name="defaultImage" format="reference|color"/>
+        <attr name="url" format="reference|string"/>
+        <attr name="enableOpenOnClick" format="reference|boolean"/>
+    </declare-styleable>
+
     <declare-styleable name="RoundedImageView">
-        <attr name="corner_radius" format="dimension" />
-        <attr name="corner_radius_lt" format="dimension" />
-        <attr name="corner_radius_rt" format="dimension" />
-        <attr name="corner_radius_rb" format="dimension" />
-        <attr name="corner_radius_lb" format="dimension" />
-        <attr name="border_width" format="dimension" />
-        <attr name="border_color" format="color" />
-        <attr name="mutate_background" format="boolean" />
-        <attr name="oval" format="boolean" />
+        <attr name="cornerRadius" format="reference|dimension" />
+        <attr name="cornerRadiusLT" format="reference|dimension" />
+        <attr name="cornerRadiusRT" format="reference|dimension" />
+        <attr name="cornerRadiusRB" format="reference|dimension" />
+        <attr name="cornerRadiusLB" format="reference|dimension" />
+        <attr name="borderWidth" format="reference|dimension" />
+        <attr name="borderColor" format="reference|color" />
+        <attr name="modifyBackground" format="reference|boolean" />
+        <attr name="oval" format="reference|boolean" />
         <attr name="android:scaleType" />
     </declare-styleable>
 
     <declare-styleable name="ImageViewWithForeground">
-        <attr name="dontPressWithParent" format="boolean"/>
+        <attr name="dontPressWithParent" format="reference|boolean"/>
         <attr name="foreground" format="reference|color"/>
         <attr name="foregroundGravity">
             <flag name="top" value="0x30" />
@@ -30,6 +36,6 @@
             <flag name="clip_vertical" value="0x80" />
             <flag name="clip_horizontal" value="0x08" />
         </attr>
-        <attr name="foregroundInsidePadding" format="boolean"/>
+        <attr name="foregroundInsidePadding" format="reference|boolean"/>
     </declare-styleable>
 </resources>

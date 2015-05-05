@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--suppress AndroidLintDisableBaselineAlignment -->
+<merge xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <FrameLayout
+        android:id="@+id/riv_cancel_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/riv_button_selector">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/riv_ic_action_cancel"
+            android:drawableStart="@drawable/riv_ic_action_cancel"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:text="@android:string/cancel"
+        />
+    </FrameLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:background="#4FFF"/>
+
+    <FrameLayout
+        android:id="@+id/riv_ok_button"
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:background="@drawable/riv_button_selector">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:drawableLeft="@drawable/riv_ic_action_done"
+            android:drawableStart="@drawable/riv_ic_action_done"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/white"
+            android:text="@android:string/ok"
+        />
+    </FrameLayout>
+</merge>

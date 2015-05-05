@@ -1,0 +1,179 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Corners and borders"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
+
+            <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                app:cornerRadiusLT="8dp"
+                app:defaultImage="@drawable/abc_ratingbar_full_material"
+                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+
+            <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                app:borderColor="@android:color/black"
+                app:borderWidth="2dp"
+                app:cornerRadiusRT="8dp"
+                app:defaultImage="@drawable/abc_ratingbar_full_material"
+                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+
+            <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                app:borderColor="@android:color/black"
+                app:borderWidth="4dp"
+                app:cornerRadiusRB="8dp"
+                app:defaultImage="@drawable/abc_ratingbar_full_material"
+                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+
+            <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:layout_width="64dp"
+                android:layout_height="64dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                app:borderColor="@android:color/black"
+                app:borderWidth="8dp"
+                app:cornerRadiusLB="8dp"
+                app:defaultImage="@drawable/abc_ratingbar_full_material"
+                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+
+        </LinearLayout>
+
+
+
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:text="Clickable"/>
+
+        <com.shaubert.ui.remoteimageview.RemoteImageView
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="8dp"
+            app:oval="true"
+            app:defaultImage="@drawable/abc_ratingbar_full_material"
+            app:url="http://sipi.usc.edu/database/preview/misc/4.2.02.png"
+            app:enableOpenOnClick="true"
+            app:modifyBackground="true"
+            app:foreground="?android:attr/selectableItemBackground"
+            app:borderColor="@android:color/white"
+            app:borderWidth="2dp"
+            android:scaleType="fitCenter"/>
+
+
+
+        <com.shaubert.ui.remoteimageview.RemoteImageView
+            android:id="@+id/image_1"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="24dp"
+            android:scaleType="centerCrop"/>
+
+        <Button
+            android:id="@+id/load_1_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Load (with default image)"/>
+
+
+
+        <com.shaubert.ui.remoteimageview.RemoteImageView
+            android:id="@+id/image_2"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="24dp"
+            android:scaleType="centerInside"/>
+
+        <Button
+            android:id="@+id/load_2_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Load (without default)"/>
+
+
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:id="@+id/image_3"
+                android:layout_width="192dp"
+                android:layout_height="192dp"
+                android:layout_marginTop="24dp"
+                android:layout_gravity="center"
+                app:foreground="?android:attr/selectableItemBackground"/>
+
+            <ProgressBar
+                android:id="@+id/progress_image_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                style="?android:attr/progressBarStyleLarge"/>
+
+            <TextView
+                android:id="@+id/error_image_3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:text="Error (tap to retry)"/>
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/load_3_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pick image"/>
+
+
+
+        <com.shaubert.ui.remoteimageview.RemoteImageView
+            android:id="@+id/image_4"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="24dp"
+            app:foreground="?android:attr/selectableItemBackground"/>
+
+        <Button
+            android:id="@+id/load_4_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pick and crop image"/>
+
+
+    </LinearLayout>
+</ScrollView>

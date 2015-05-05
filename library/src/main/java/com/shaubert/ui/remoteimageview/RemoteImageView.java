@@ -3,12 +3,10 @@ package com.shaubert.ui.remoteimageview;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
@@ -28,11 +26,13 @@ public class RemoteImageView extends OptimizedImageView {
     private static ImageLoader imageLoader;
     private static DisplayImageOptions displayImageOptions;
     private static Class<? extends Activity> openImageActivityClass;
+    private static Class<? extends Activity> cropImageActivityClass;
 
     public static class Setup {
         private ImageLoader imageLoader;
         private DisplayImageOptions displayImageOptions;
         private Class<? extends Activity> openImageActivityClass;
+        private Class<? extends Activity> cropImageActivityClass;
 
         public Setup imageLoader(ImageLoader imageLoader) {
             this.imageLoader = imageLoader;
@@ -49,6 +49,11 @@ public class RemoteImageView extends OptimizedImageView {
             return this;
         }
 
+        public Setup cropImageActivityClass(Class<? extends Activity> cropImageActivityClass) {
+            this.cropImageActivityClass = cropImageActivityClass;
+            return this;
+        }
+
         public void apply() {
             if (imageLoader == null) {
                 imageLoader = ImageLoader.getInstance();
@@ -59,40 +64,30 @@ public class RemoteImageView extends OptimizedImageView {
             if (openImageActivityClass == null) {
                 openImageActivityClass = ImageViewActivity.class;
             }
+            if (cropImageActivityClass == null) {
+                cropImageActivityClass = CropImageActivity.class;
+            }
 
             RemoteImageView.imageLoader = imageLoader;
             RemoteImageView.displayImageOptions = displayImageOptions;
             RemoteImageView.openImageActivityClass = openImageActivityClass;
+            RemoteImageView.cropImageActivityClass = cropImageActivityClass;
         }
     }
 
+    private boolean imageLoaded;
+    private boolean openOnClickEnabled;
     private String imageUrl;
     private Drawable defaultImage;
     private DisplayImageOptions options;
     private ImageViewAware imageAware;
 
-    private ImageLoadingListener activeListener;
     private ImageLoadingListener listener;
-    private ImageLoadingListener openImageLoadingListener = new ImageLoadingListener() {
+    private ImageLoadingListener innerLoadingListener = new ImageLoadingListener() {
         @Override
         @SuppressLint("NewApi")
         public void onLoadingComplete(final String imageUri, View view, final Bitmap loadedImage) {
-            openImageClickListener = new OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Context context = getContext();
-                    if (context instanceof Activity) {
-                        Activity activity = (Activity) context;
-                        String transitionName = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? getTransitionName() : null;
-                        ActivityOptionsCompat activityOptions =
-                                ActivityOptionsCompat.makeSceneTransitionAnimation(
-                                        activity, RemoteImageView.this, transitionName);
-                        Intent intent = new Intent(activity, getOpenImageActivityClass());
-                        intent.putExtra(ImageViewActivity.IMAGE_URL_EXTRA, imageUrl);
-                        ActivityCompat.startActivity(activity, intent, activityOptions.toBundle());
-                    }
-                }
-            };
+            imageLoaded = true;
             setupClickListeners();
             if (listener != null) {
                 listener.onLoadingComplete(imageUri, view, loadedImage);
@@ -108,7 +103,7 @@ public class RemoteImageView extends OptimizedImageView {
 
         @Override
         public void onLoadingStarted(String imageUri, View view) {
-            openImageClickListener = null;
+            imageLoaded = false;
             setupClickListeners();
             if (listener != null) {
                 listener.onLoadingStarted(imageUri, view);
@@ -123,14 +118,29 @@ public class RemoteImageView extends OptimizedImageView {
         }
     };
 
-    private OnClickListener openImageClickListener;
+    private OnClickListener openImageClickListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if (!openOnClickEnabled
+                    || !imageLoaded
+                    || TextUtils.isEmpty(imageUrl)) return;
+
+            final Context context = getContext();
+            if (context instanceof Activity) {
+                getHandler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        ImageViewActivity.start((Activity) context, RemoteImageView.this);
+                    }
+                }, 250);
+            }
+        }
+    };
     private OnClickListener clickListener;
     private OnClickListener multipleClickListener = new OnClickListener() {
         @Override
         public void onClick(View v) {
-            if (openImageClickListener != null) {
-                openImageClickListener.onClick(v);
-            }
+            openImageClickListener.onClick(v);
             if (clickListener != null) {
                 clickListener.onClick(v);
             }
@@ -139,21 +149,33 @@ public class RemoteImageView extends OptimizedImageView {
 
     public RemoteImageView(Context context) {
         super(context);
-        init();
+        init(null);
     }
 
     public RemoteImageView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        init();
+        init(attrs);
     }
 
     public RemoteImageView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
-        init();
+        init(attrs);
     }
 
-    private void init() {
+    private void init(AttributeSet attrs) {
         imageAware = new ImageViewAware(this);
+
+        if (attrs != null) {
+            TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RemoteImageView);
+
+            setDefaultImage(typedArray.getDrawable(R.styleable.RemoteImageView_defaultImage));
+            setImageUrl(typedArray.getString(R.styleable.RemoteImageView_url));
+            if (typedArray.getBoolean(R.styleable.RemoteImageView_enableOpenOnClick, false)) {
+                enableOpenOnClick();
+            }
+
+            typedArray.recycle();
+        }
     }
 
     @Override
@@ -163,10 +185,11 @@ public class RemoteImageView extends OptimizedImageView {
     }
 
     private void setupClickListeners() {
-        if (clickListener != null || openImageClickListener != null) {
+        if (clickListener != null || openOnClickEnabled) {
             super.setOnClickListener(multipleClickListener);
         } else {
             super.setOnClickListener(null);
+            setClickable(false);
         }
     }
 
@@ -191,21 +214,34 @@ public class RemoteImageView extends OptimizedImageView {
         return openImageActivityClass;
     }
 
+    public static Class<? extends Activity> getCropImageActivityClass() {
+        if (cropImageActivityClass == null) {
+            cropImageActivityClass = CropImageActivity.class;
+        }
+        return cropImageActivityClass;
+    }
+
     public String getImageUrl() {
         return imageUrl;
     }
 
     public void cancelLoading() {
-        imageUrl = null;
-        getImageLoader().cancelDisplayTask(this);
-        if (defaultImage != null) {
+        if (!TextUtils.isEmpty(imageUrl)) {
+            imageUrl = null;
+            getImageLoader().cancelDisplayTask(this);
             setImageDrawable(defaultImage);
         }
     }
 
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     public void setDefaultImage(int defaultImageResId) {
         if (defaultImageResId > 0) {
-            setDefaultImage(getContext().getResources().getDrawable(defaultImageResId));
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                setDefaultImage(getContext().getDrawable(defaultImageResId));
+            } else {
+                setDefaultImage(getContext().getResources().getDrawable(defaultImageResId));
+            }
         } else {
             setDefaultImage(null);
         }
@@ -247,9 +283,9 @@ public class RemoteImageView extends OptimizedImageView {
             if (!TextUtils.isEmpty(url)) {
                 imageUrl = url;
                 if (options != null) {
-                    getImageLoader().displayImage(url, imageAware, options, activeListener);
+                    getImageLoader().displayImage(url, imageAware, options, innerLoadingListener);
                 } else {
-                    getImageLoader().displayImage(url, imageAware, activeListener);
+                    getImageLoader().displayImage(url, imageAware, innerLoadingListener);
                 }
             }
         }
@@ -273,18 +309,17 @@ public class RemoteImageView extends OptimizedImageView {
     }
 
     public void setListener(ImageLoadingListener listener) {
-        if (activeListener == null || activeListener == this.listener) {
-            activeListener = listener;
-        }
         this.listener = listener;
     }
 
     public void enableOpenOnClick() {
-        activeListener = openImageLoadingListener;
+        openOnClickEnabled = true;
+        setupClickListeners();
     }
 
     public void disableOpenOnClick() {
-        activeListener = listener;
+        openOnClickEnabled = false;
+        setupClickListeners();
     }
 
 }

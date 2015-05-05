@@ -6,7 +6,10 @@ repositories {
 
 dependencies {
     compile 'com.nostra13.universalimageloader:universal-image-loader:1.9.3'
+    compile 'com.shaubert.lifecycle.objects:library:1.2'
+    compile 'com.shaubert.ui.dialogs:library:1.0'
     compile 'com.github.chrisbanes.photoview:library:1.2.4'
+    compile 'com.edmodo:cropper:1.0.1@aar'
 }
 
 android {
@@ -14,7 +17,7 @@ android {
     buildToolsVersion '22.0.1'
 
     defaultConfig {
-        minSdkVersion 4
+        minSdkVersion 11
         targetSdkVersion 22
     }
 }

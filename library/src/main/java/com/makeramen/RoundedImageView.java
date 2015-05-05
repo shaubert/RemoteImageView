@@ -39,7 +39,7 @@ public class RoundedImageView extends ImageViewWithForeground {
     private int mBorderWidth = DEFAULT_BORDER_WIDTH;
     private ColorStateList mBorderColor;
     private boolean mOval = false;
-    private boolean mMutateBackground = false;
+    private boolean mModifyBackground = false;
 
     private int mResourceId;
     private Drawable mForegroundDrawable;
@@ -73,11 +73,11 @@ public class RoundedImageView extends ImageViewWithForeground {
             setScaleType(super.getScaleType());
         }
 
-        int mCornerRadiusLT = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius_lt, DEFAULT_RADIUS);
-        int mCornerRadiusRT = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius_rt, DEFAULT_RADIUS);
-        int mCornerRadiusRB = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius_rb, DEFAULT_RADIUS);
-        int mCornerRadiusLB = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius_lb, DEFAULT_RADIUS);
-        int mCornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_corner_radius, -1);
+        int mCornerRadiusLT = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusLT, DEFAULT_RADIUS);
+        int mCornerRadiusRT = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusRT, DEFAULT_RADIUS);
+        int mCornerRadiusRB = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusRB, DEFAULT_RADIUS);
+        int mCornerRadiusLB = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusLB, DEFAULT_RADIUS);
+        int mCornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadius, -1);
         if (mCornerRadius > 0) {
             mCornerRadiusLT = mCornerRadiusRT = mCornerRadiusRB = mCornerRadiusLB = mCornerRadius;
         }
@@ -86,10 +86,10 @@ public class RoundedImageView extends ImageViewWithForeground {
         mCornerRadii[4] = mCornerRadii[5] = mCornerRadiusRB;
         mCornerRadii[6] = mCornerRadii[7] = mCornerRadiusLB;
 
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.RoundedImageView_border_width, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColorStateList(R.styleable.RoundedImageView_border_color);
+        mBorderWidth = a.getDimensionPixelSize(R.styleable.RoundedImageView_borderWidth, DEFAULT_BORDER_WIDTH);
+        mBorderColor = a.getColorStateList(R.styleable.RoundedImageView_borderColor);
 
-        mMutateBackground = a.getBoolean(R.styleable.RoundedImageView_mutate_background, false);
+        mModifyBackground = a.getBoolean(R.styleable.RoundedImageView_modifyBackground, false);
         mOval = a.getBoolean(R.styleable.RoundedImageView_oval, false);
 
         updateAllDrawableAttrs();
@@ -253,7 +253,7 @@ public class RoundedImageView extends ImageViewWithForeground {
     private void setupBgDrawable(Drawable background) {
         mBackgroundDrawable = background;
         Drawable resDrawable = background;
-        if (background != null && mMutateBackground && shouldUseRoundedDrawable()) {
+        if (background != null && mModifyBackground && shouldUseRoundedDrawable()) {
             mRoundedBackgroundDrawable = RoundedDrawablesFactory.wrapDrawable(background);
             updateBackgroundDrawableAttrs();
             resDrawable = mRoundedBackgroundDrawable.getDrawable();
@@ -277,7 +277,7 @@ public class RoundedImageView extends ImageViewWithForeground {
     private void setupForegroundDrawable(Drawable foreground) {
         mForegroundDrawable = foreground;
         Drawable resDrawable = foreground;
-        if (foreground != null && mMutateBackground && shouldUseRoundedDrawable()) {
+        if (foreground != null && mModifyBackground && shouldUseRoundedDrawable()) {
             mRoundedForegroundDrawable = RoundedDrawablesFactory.wrapDrawable(foreground);
             updateForegroundDrawableAttrs();
             resDrawable = mRoundedForegroundDrawable.getDrawable();
@@ -306,12 +306,12 @@ public class RoundedImageView extends ImageViewWithForeground {
     }
 
     private void updateBackgroundDrawableAttrs() {
-        if (mRoundedBackgroundDrawable == null && mMutateBackground) {
+        if (mRoundedBackgroundDrawable == null && mModifyBackground) {
             if (shouldUseRoundedDrawable()) {
                 setupBgDrawable(mBackgroundDrawable);
                 return;
             }
-        } else if (!mMutateBackground && mRoundedBackgroundDrawable != null) {
+        } else if (!mModifyBackground && mRoundedBackgroundDrawable != null) {
             setupBgDrawable(mBackgroundDrawable);
             return;
         }
@@ -320,12 +320,12 @@ public class RoundedImageView extends ImageViewWithForeground {
     }
 
     private void updateForegroundDrawableAttrs() {
-        if (mRoundedForegroundDrawable == null && mMutateBackground) {
+        if (mRoundedForegroundDrawable == null && mModifyBackground) {
             if (shouldUseRoundedDrawable()) {
                 setupForegroundDrawable(mForegroundDrawable);
                 return;
             }
-        } else if (!mMutateBackground && mRoundedForegroundDrawable != null) {
+        } else if (!mModifyBackground && mRoundedForegroundDrawable != null) {
             setupBgDrawable(mForegroundDrawable);
             return;
         }
@@ -422,15 +422,15 @@ public class RoundedImageView extends ImageViewWithForeground {
     }
 
     public boolean isMutateBackground() {
-        return mMutateBackground;
+        return mModifyBackground;
     }
 
     public void setMutateBackground(boolean mutate) {
-        if (mMutateBackground == mutate) {
+        if (mModifyBackground == mutate) {
             return;
         }
 
-        mMutateBackground = mutate;
+        mModifyBackground = mutate;
         updateBackgroundDrawableAttrs();
         updateForegroundDrawableAttrs();
         if (shouldUseRoundedDrawable()) {
