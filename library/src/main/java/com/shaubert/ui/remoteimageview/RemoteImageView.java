@@ -227,6 +227,7 @@ public class RemoteImageView extends OptimizedImageView {
 
     public void cancelLoading() {
         if (!TextUtils.isEmpty(imageUrl)) {
+            imageLoaded = false;
             imageUrl = null;
             getImageLoader().cancelDisplayTask(this);
             setImageDrawable(defaultImage);
@@ -250,7 +251,7 @@ public class RemoteImageView extends OptimizedImageView {
     public void setDefaultImage(Drawable drawable) {
         this.defaultImage = drawable;
         if (defaultImage != null) {
-            if (getDrawable() == null) {
+            if (!imageLoaded) {
                 setImageDrawable(defaultImage);
             }
             options = new DisplayImageOptions.Builder()
@@ -261,11 +262,15 @@ public class RemoteImageView extends OptimizedImageView {
                     .build();
         } else {
             options = null;
+            if (!imageLoaded) {
+                setImageDrawable(null);
+            }
         }
     }
 
     public void reload() {
         if (!TextUtils.isEmpty(imageUrl)) {
+            imageLoaded = false;
             String url = imageUrl;
             imageUrl = null;
             setImageUrl(url);

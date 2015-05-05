@@ -38,6 +38,13 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
     }
 
     public void setupViews(@NonNull RemoteImageView imageView, @Nullable View takePictureButton, @Nullable View progressView, @Nullable View errorView) {
+        if (this.takePictureButton != null) {
+            this.takePictureButton.setOnClickListener(null);
+        }
+        if (this.errorView != null) {
+            this.errorView.setOnClickListener(null);
+        }
+
         this.takePictureButton = takePictureButton;
         this.progressView = progressView;
         this.errorView = errorView;
