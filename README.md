@@ -8,7 +8,7 @@ ImageView to load images from urls. With optional foreground and round corners. 
         maven{url "https://github.com/shaubert/maven-repo/raw/master/releases"}
     }
     dependencies {
-        compile 'com.shaubert.ui.remoteimageview:library:1.1'
+        compile 'com.shaubert.ui.remoteimageview:library:1.1.1'
     }
 
 ## References
@@ -83,10 +83,12 @@ To pick/crop image use `ImagePicker`:
 
         @Override
         public void setupCropOptions(@NonNull File imageFile, @NonNull CropOptions.Builder builder) {
-            builder.minHeight(200)
-                    .minWidth(200)
-                    .aspectX(1)
-                    .aspectY(1);
+            builder.minHeight(200) //if image frame smaller error message will be shown
+                    .minWidth(200) //if image frame smaller error message will be shown
+                    .maxHeight(400) //if image frame bigger image will be downscaled
+                    .maxWidth(400) //if image frame bigger image will be downscaled
+                    .aspectX(1) //image frame aspect ratio
+                    .aspectY(1); //image frame aspect ratio
         }
     });
     

@@ -18,12 +18,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.assist.FailReason;
-import com.nostra13.universalimageloader.core.download.ImageDownloader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
 import java.util.List;
 
 public class ImageViewActivity extends Activity {
@@ -138,13 +135,6 @@ public class ImageViewActivity extends Activity {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public static void start(Activity activity, ImageView sharedImageView, String imageUrl) {
-        ImageDownloader.Scheme scheme = ImageDownloader.Scheme.ofUri(imageUrl);
-        if (scheme == ImageDownloader.Scheme.FILE) {
-            try {
-                imageUrl = URLDecoder.decode(imageUrl, "UTF-8");
-            } catch (UnsupportedEncodingException ignored) {
-            }
-        }
         String transitionName = Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP ? sharedImageView.getTransitionName() : null;
         ActivityOptionsCompat activityOptions =
                 ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedImageView, transitionName);

@@ -30,6 +30,7 @@ import android.widget.Toast;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.assist.ViewScaleType;
+import com.nostra13.universalimageloader.core.download.ImageDownloader;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.nostra13.universalimageloader.utils.ImageSizeUtils;
 import com.nostra13.universalimageloader.utils.StorageUtils;
@@ -433,6 +434,15 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
     }
 
+    public String getImageUrl() {
+        File imageFile = getImageFile();
+        if (imageFile != null) {
+            return ImageDownloader.Scheme.FILE.wrap(imageFile.getAbsolutePath());
+        } else {
+            return null;
+        }
+    }
+
     public boolean hasImage() {
         return state == State.WITH_IMAGE;
     }
@@ -450,7 +460,7 @@ public class ImagePickerController extends LifecycleBasedObject {
         final File imageFile = getImageFile();
         if (state == State.WITH_IMAGE && imageFile != null) {
             ImageView sharedImageView = callback.getImageView();
-            ImageViewActivity.start(getActivity(), sharedImageView, getImageUri().toString());
+            ImageViewActivity.start(getActivity(), sharedImageView, getImageUrl());
         }
     }
 
@@ -618,7 +628,7 @@ public class ImagePickerController extends LifecycleBasedObject {
         } else {
             imageFile = tempImageOutput;
         }
-        if (!privatePhotos) {
+        if (!privatePhotos && imageFile != null) {
             MediaScannerConnection.scanFile(getActivity(),
                     new String[] { imageFile.getAbsolutePath() }, new String[] {"image/jpeg"}, null);
         }

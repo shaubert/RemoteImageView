@@ -7,6 +7,7 @@ import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.RectF;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -113,7 +114,7 @@ public class CropImageActivity extends FragmentActivity {
                 ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.BLACK));
 
-        RemoteImageView.getImageLoader().loadImage(cropOptions.getInUri().toString(), new SimpleImageLoadingListener() {
+        RemoteImageView.getImageLoader().loadImage(Uri.decode(cropOptions.getInUri().toString()), new SimpleImageLoadingListener() {
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
                 cropImageView.setImageBitmap(loadedImage);
@@ -170,6 +171,20 @@ public class CropImageActivity extends FragmentActivity {
     public void saveResultAndFinish() {
         if (validateMinSizes()) {
             Bitmap image = cropImageView.getCroppedImage();
+            int maxWidth = cropOptions.getMaxWidth();
+            int maxHeight = cropOptions.getMaxHeight();
+            int targetW = maxWidth > 0 ? maxWidth : image.getWidth();
+            int targetH = maxHeight > 0 ? maxHeight : image.getHeight();
+            if (image.getHeight() > targetH || image.getWidth() > targetW) {
+                float scale = Math.max((float) image.getWidth() / targetW, (float) image.getHeight() / targetH);
+                int w = (int) (image.getWidth() / scale);
+                int h = (int) (image.getHeight() / scale);
+                Bitmap newImage = Bitmap.createScaledBitmap(image, w, h, false);
+                if (newImage != image) {
+                    image.recycle();
+                    image = newImage;
+                }
+            }
             startCropTask(image);
         }
     }

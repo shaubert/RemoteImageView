@@ -61,8 +61,10 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
             public void setupCropOptions(@NonNull File imageFile, @NonNull CropOptions.Builder builder) {
                 builder.minHeight(200)
                         .minWidth(200)
+                        .maxHeight(400)
+                        .maxWidth(400)
                         .aspectX(1)
-                        .aspectY(1);
+                        .aspectY(2);
             }
         });
         imagePicker2.setPrivatePhotos(true);

@@ -10,6 +10,8 @@ public class CropOptions implements Parcelable {
     private final Uri outUri;
     private final int minWidth;
     private final int minHeight;
+    private final int maxWidth;
+    private final int maxHeight;
     private final int aspectX;
     private final int aspectY;
     private final Bitmap.CompressFormat compressFormat;
@@ -20,6 +22,8 @@ public class CropOptions implements Parcelable {
         outUri = builder.outUri;
         minWidth = builder.minWidth;
         minHeight = builder.minHeight;
+        maxWidth = builder.maxWidth;
+        maxHeight = builder.maxHeight;
         aspectX = builder.aspectX;
         aspectY = builder.aspectY;
         compressFormat = builder.compressFormat;
@@ -46,6 +50,14 @@ public class CropOptions implements Parcelable {
         return minHeight;
     }
 
+    public int getMaxWidth() {
+        return maxWidth;
+    }
+
+    public int getMaxHeight() {
+        return maxHeight;
+    }
+
     public int getAspectX() {
         return aspectX;
     }
@@ -68,6 +80,8 @@ public class CropOptions implements Parcelable {
         private Uri outUri;
         private int minWidth;
         private int minHeight;
+        private int maxWidth;
+        private int maxHeight;
         private int aspectX;
         private int aspectY;
         private Bitmap.CompressFormat compressFormat;
@@ -93,6 +107,16 @@ public class CropOptions implements Parcelable {
 
         public Builder minHeight(int minHeight) {
             this.minHeight = minHeight;
+            return this;
+        }
+
+        public Builder maxWidth(int maxWidth) {
+            this.maxWidth = maxWidth;
+            return this;
+        }
+
+        public Builder maxHeight(int maxHeight) {
+            this.maxHeight = maxHeight;
             return this;
         }
 
@@ -139,6 +163,8 @@ public class CropOptions implements Parcelable {
         dest.writeParcelable(this.outUri, 0);
         dest.writeInt(this.minWidth);
         dest.writeInt(this.minHeight);
+        dest.writeInt(this.maxWidth);
+        dest.writeInt(this.maxHeight);
         dest.writeInt(this.aspectX);
         dest.writeInt(this.aspectY);
         dest.writeInt(this.compressFormat == null ? -1 : this.compressFormat.ordinal());
@@ -150,6 +176,8 @@ public class CropOptions implements Parcelable {
         this.outUri = in.readParcelable(Uri.class.getClassLoader());
         this.minWidth = in.readInt();
         this.minHeight = in.readInt();
+        this.maxWidth = in.readInt();
+        this.maxHeight = in.readInt();
         this.aspectX = in.readInt();
         this.aspectY = in.readInt();
         int tmpCompressFormat = in.readInt();
