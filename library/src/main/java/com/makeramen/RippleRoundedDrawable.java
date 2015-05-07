@@ -15,7 +15,7 @@ public class RippleRoundedDrawable extends AbstractRoundedDrawable {
 
     @TargetApi(Build.VERSION_CODES.LOLLIPOP)
     public RippleRoundedDrawable(RippleDrawable wrappedDrawable) {
-        rippleDrawable = (RippleDrawable) wrappedDrawable.getConstantState().newDrawable();
+        rippleDrawable = (RippleDrawable) wrappedDrawable.getConstantState().newDrawable(null);
         int numberOfLayers = wrappedDrawable.getNumberOfLayers();
         roundedDrawables = new RoundedDrawable[numberOfLayers];
         for (int i = 0; i < numberOfLayers; i++) {

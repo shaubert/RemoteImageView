@@ -12,6 +12,7 @@ public class RoundedDrawablesFactory {
 
     public static RoundedDrawable wrapDrawable(Drawable drawable) {
         if (drawable != null) {
+            drawable = drawable.mutate();
             if (drawable instanceof RoundedDrawable) {
                 return (RoundedDrawable) drawable;
             } else if (drawable instanceof BitmapDrawable) {
