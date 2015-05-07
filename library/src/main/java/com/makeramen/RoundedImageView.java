@@ -73,11 +73,11 @@ public class RoundedImageView extends ImageViewWithForeground {
             setScaleType(super.getScaleType());
         }
 
-        int mCornerRadiusLT = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusLT, DEFAULT_RADIUS);
-        int mCornerRadiusRT = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusRT, DEFAULT_RADIUS);
-        int mCornerRadiusRB = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusRB, DEFAULT_RADIUS);
-        int mCornerRadiusLB = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadiusLB, DEFAULT_RADIUS);
-        int mCornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_cornerRadius, -1);
+        int mCornerRadiusLT = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_cornerRadiusLT, DEFAULT_RADIUS);
+        int mCornerRadiusRT = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_cornerRadiusRT, DEFAULT_RADIUS);
+        int mCornerRadiusRB = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_cornerRadiusRB, DEFAULT_RADIUS);
+        int mCornerRadiusLB = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_cornerRadiusLB, DEFAULT_RADIUS);
+        int mCornerRadius = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_cornerRadius, -1);
         if (mCornerRadius > 0) {
             mCornerRadiusLT = mCornerRadiusRT = mCornerRadiusRB = mCornerRadiusLB = mCornerRadius;
         }
@@ -86,11 +86,11 @@ public class RoundedImageView extends ImageViewWithForeground {
         mCornerRadii[4] = mCornerRadii[5] = mCornerRadiusRB;
         mCornerRadii[6] = mCornerRadii[7] = mCornerRadiusLB;
 
-        mBorderWidth = a.getDimensionPixelSize(R.styleable.RoundedImageView_borderWidth, DEFAULT_BORDER_WIDTH);
-        mBorderColor = a.getColorStateList(R.styleable.RoundedImageView_borderColor);
+        mBorderWidth = a.getDimensionPixelSize(R.styleable.RoundedImageView_riv_borderWidth, DEFAULT_BORDER_WIDTH);
+        mBorderColor = a.getColorStateList(R.styleable.RoundedImageView_riv_borderColor);
 
-        mModifyBackground = a.getBoolean(R.styleable.RoundedImageView_modifyBackground, false);
-        mOval = a.getBoolean(R.styleable.RoundedImageView_oval, false);
+        mModifyBackground = a.getBoolean(R.styleable.RoundedImageView_riv_modifyBackground, false);
+        mOval = a.getBoolean(R.styleable.RoundedImageView_riv_oval, false);
 
         updateAllDrawableAttrs();
 

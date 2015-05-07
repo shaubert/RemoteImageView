@@ -51,15 +51,15 @@ public class ImageViewWithForeground extends ImageView {
         TypedArray a = getContext().obtainStyledAttributes(attrs, R.styleable.ImageViewWithForeground,
                 defStyle, 0);
 
-        mForegroundGravity = a.getInt(R.styleable.ImageViewWithForeground_foregroundGravity, mForegroundGravity);
+        mForegroundGravity = a.getInt(R.styleable.ImageViewWithForeground_riv_foregroundGravity, mForegroundGravity);
 
-        final Drawable d = a.getDrawable(R.styleable.ImageViewWithForeground_foreground);
+        final Drawable d = a.getDrawable(R.styleable.ImageViewWithForeground_riv_foreground);
         if (d != null) {
             setForeground(d);
         }
 
-        mForegroundInPadding = a.getBoolean(R.styleable.ImageViewWithForeground_foregroundInsidePadding, true);
-        dontPressWithParent = a.getBoolean(R.styleable.ImageViewWithForeground_dontPressWithParent, false);
+        mForegroundInPadding = a.getBoolean(R.styleable.ImageViewWithForeground_riv_foregroundInsidePadding, true);
+        dontPressWithParent = a.getBoolean(R.styleable.ImageViewWithForeground_riv_dontPressWithParent, false);
         a.recycle();
     }
 

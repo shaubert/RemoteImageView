@@ -26,42 +26,42 @@
             <com.shaubert.ui.remoteimageview.RemoteImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
-                app:cornerRadiusLT="8dp"
-                app:defaultImage="@drawable/abc_ratingbar_full_material"
-                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+                app:riv_cornerRadiusLT="8dp"
+                app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                app:borderColor="@android:color/black"
-                app:borderWidth="2dp"
-                app:cornerRadiusRT="8dp"
-                app:defaultImage="@drawable/abc_ratingbar_full_material"
-                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+                app:riv_borderColor="@android:color/black"
+                app:riv_borderWidth="2dp"
+                app:riv_cornerRadiusRT="8dp"
+                app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                app:borderColor="@android:color/black"
-                app:borderWidth="4dp"
-                app:cornerRadiusRB="8dp"
-                app:defaultImage="@drawable/abc_ratingbar_full_material"
-                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+                app:riv_borderColor="@android:color/black"
+                app:riv_borderWidth="4dp"
+                app:riv_cornerRadiusRB="8dp"
+                app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
-                app:borderColor="@android:color/black"
-                app:borderWidth="8dp"
-                app:cornerRadiusLB="8dp"
-                app:defaultImage="@drawable/abc_ratingbar_full_material"
-                app:url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
+                app:riv_borderColor="@android:color/black"
+                app:riv_borderWidth="8dp"
+                app:riv_cornerRadiusLB="8dp"
+                app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
         </LinearLayout>
 
@@ -79,14 +79,14 @@
             android:layout_width="192dp"
             android:layout_height="192dp"
             android:layout_marginTop="8dp"
-            app:oval="true"
-            app:defaultImage="@drawable/abc_ratingbar_full_material"
-            app:url="http://sipi.usc.edu/database/preview/misc/4.2.02.png"
-            app:enableOpenOnClick="true"
-            app:modifyBackground="true"
-            app:foreground="?android:attr/selectableItemBackground"
-            app:borderColor="@android:color/white"
-            app:borderWidth="2dp"
+            app:riv_oval="true"
+            app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+            app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.02.png"
+            app:riv_enableOpenOnClick="true"
+            app:riv_modifyBackground="true"
+            app:riv_foreground="?android:attr/selectableItemBackground"
+            app:riv_borderColor="@android:color/white"
+            app:riv_borderWidth="2dp"
             android:scaleType="fitCenter"/>
 
 
@@ -133,7 +133,7 @@
                 android:layout_height="192dp"
                 android:layout_marginTop="24dp"
                 android:layout_gravity="center"
-                app:foreground="?android:attr/selectableItemBackground"/>
+                app:riv_foreground="?android:attr/selectableItemBackground"/>
 
             <ProgressBar
                 android:id="@+id/progress_image_3"
@@ -165,7 +165,7 @@
             android:layout_width="192dp"
             android:layout_height="192dp"
             android:layout_marginTop="24dp"
-            app:foreground="?android:attr/selectableItemBackground"/>
+            app:riv_foreground="?android:attr/selectableItemBackground"/>
 
         <Button
             android:id="@+id/load_4_button"

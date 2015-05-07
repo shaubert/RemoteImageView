@@ -8,7 +8,7 @@ ImageView to load images from urls. With optional foreground and round corners. 
         maven{url "https://github.com/shaubert/maven-repo/raw/master/releases"}
     }
     dependencies {
-        compile 'com.shaubert.ui.remoteimageview:library:1.1.1'
+        compile 'com.shaubert.ui.remoteimageview:library:1.1.2'
     }
 
 ## References
@@ -37,24 +37,24 @@ To open image fullscreen you need to add `ImageViewActivity` to your `AndroidMan
 
 List of supported xml attributes:
 
-    "app:defaultImage" //dummy image to show while loading
-    "app:url" //image url to load
-    "app:enableOpenOnClick" //open loaded image in openImageActivityClass on click
+    "app:riv_defaultImage" //dummy image to show while loading
+    "app:riv_url" //image url to load
+    "app:riv_enableOpenOnClick" //open loaded image in openImageActivityClass on click
 
-    "app:cornerRadius" //all corners radius
-    "app:cornerRadiusLT" //left top corner radius
-    "app:cornerRadiusRT" //right top corner radius
-    "app:cornerRadiusRB" //right bottom corner radius
-    "app:cornerRadiusLB" //left bottom corner radius
-    "app:oval" //oval shape
-    "app:borderWidth"
-    "app:borderColor"
-    "app:modifyBackground" //apply corners and borders to background and foreground    
+    "app:riv_cornerRadius" //all corners radius
+    "app:riv_cornerRadiusLT" //left top corner radius
+    "app:riv_cornerRadiusRT" //right top corner radius
+    "app:riv_cornerRadiusRB" //right bottom corner radius
+    "app:riv_cornerRadiusLB" //left bottom corner radius
+    "app:riv_oval" //oval shape
+    "app:riv_borderWidth"
+    "app:riv_borderColor"
+    "app:riv_modifyBackground" //apply corners and borders to background and foreground    
 
-    "app:dontPressWithParent" //do not copy parent's pressed state
-    "app:foreground" //foreground (draw on top)
-    "app:foregroundGravity"
-    "app:foregroundInsidePadding"
+    "app:riv_dontPressWithParent" //do not copy parent's pressed state
+    "app:riv_foreground" //foreground (draw on top)
+    "app:riv_foregroundGravity"
+    "app:riv_foregroundInsidePadding"
     
 To pick/crop image use `ImagePicker`:
 

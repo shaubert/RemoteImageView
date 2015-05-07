@@ -168,9 +168,9 @@ public class RemoteImageView extends OptimizedImageView {
         if (attrs != null) {
             TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.RemoteImageView);
 
-            setDefaultImage(typedArray.getDrawable(R.styleable.RemoteImageView_defaultImage));
-            setImageUrl(typedArray.getString(R.styleable.RemoteImageView_url));
-            if (typedArray.getBoolean(R.styleable.RemoteImageView_enableOpenOnClick, false)) {
+            setDefaultImage(typedArray.getDrawable(R.styleable.RemoteImageView_riv_defaultImage));
+            setImageUrl(typedArray.getString(R.styleable.RemoteImageView_riv_url));
+            if (typedArray.getBoolean(R.styleable.RemoteImageView_riv_enableOpenOnClick, false)) {
                 enableOpenOnClick();
             }
 

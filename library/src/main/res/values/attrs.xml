@@ -1,28 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="RemoteImageView">
-        <attr name="defaultImage" format="reference|color"/>
-        <attr name="url" format="reference|string"/>
-        <attr name="enableOpenOnClick" format="reference|boolean"/>
+        <attr name="riv_defaultImage" format="reference|color"/>
+        <attr name="riv_url" format="reference|string"/>
+        <attr name="riv_enableOpenOnClick" format="reference|boolean"/>
     </declare-styleable>
 
     <declare-styleable name="RoundedImageView">
-        <attr name="cornerRadius" format="reference|dimension" />
-        <attr name="cornerRadiusLT" format="reference|dimension" />
-        <attr name="cornerRadiusRT" format="reference|dimension" />
-        <attr name="cornerRadiusRB" format="reference|dimension" />
-        <attr name="cornerRadiusLB" format="reference|dimension" />
-        <attr name="borderWidth" format="reference|dimension" />
-        <attr name="borderColor" format="reference|color" />
-        <attr name="modifyBackground" format="reference|boolean" />
-        <attr name="oval" format="reference|boolean" />
+        <attr name="riv_cornerRadius" format="reference|dimension" />
+        <attr name="riv_cornerRadiusLT" format="reference|dimension" />
+        <attr name="riv_cornerRadiusRT" format="reference|dimension" />
+        <attr name="riv_cornerRadiusRB" format="reference|dimension" />
+        <attr name="riv_cornerRadiusLB" format="reference|dimension" />
+        <attr name="riv_borderWidth" format="reference|dimension" />
+        <attr name="riv_borderColor" format="reference|color" />
+        <attr name="riv_modifyBackground" format="reference|boolean" />
+        <attr name="riv_oval" format="reference|boolean" />
         <attr name="android:scaleType" />
     </declare-styleable>
 
     <declare-styleable name="ImageViewWithForeground">
-        <attr name="dontPressWithParent" format="reference|boolean"/>
-        <attr name="foreground" format="reference|color"/>
-        <attr name="foregroundGravity">
+        <attr name="riv_dontPressWithParent" format="reference|boolean"/>
+        <attr name="riv_foreground" format="reference|color"/>
+        <attr name="riv_foregroundGravity">
             <flag name="top" value="0x30" />
             <flag name="bottom" value="0x50" />
             <flag name="left" value="0x03" />
@@ -36,6 +36,6 @@
             <flag name="clip_vertical" value="0x80" />
             <flag name="clip_horizontal" value="0x08" />
         </attr>
-        <attr name="foregroundInsidePadding" format="reference|boolean"/>
+        <attr name="riv_foregroundInsidePadding" format="reference|boolean"/>
     </declare-styleable>
 </resources>
