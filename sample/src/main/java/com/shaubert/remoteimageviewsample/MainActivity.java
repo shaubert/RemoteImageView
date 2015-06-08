@@ -3,12 +3,12 @@ package com.shaubert.remoteimageviewsample;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
+import android.widget.Toast;
+import com.makeramen.RoundedDrawable;
+import com.makeramen.RoundedDrawablesFactory;
 import com.nostra13.universalimageloader.core.assist.ViewScaleType;
 import com.shaubert.lifecycle.objects.dispatchers.support.LifecycleDispatcherActionBarActivity;
-import com.shaubert.ui.remoteimageview.CompressionOptions;
-import com.shaubert.ui.remoteimageview.CropOptions;
-import com.shaubert.ui.remoteimageview.ImagePicker;
-import com.shaubert.ui.remoteimageview.ImagePickerController;
+import com.shaubert.ui.remoteimageview.*;
 
 import java.io.File;
 
@@ -23,6 +23,23 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         setContentView(R.layout.activity_main);
 
         viewHolder = new ActivityMainHolder(this);
+
+        for (RemoteImageView imageView : viewHolder.getCornerImages()) {
+            if (imageView.getForeground() == null) {
+                RoundedDrawable roundedDrawable = RoundedDrawablesFactory.wrapDrawable(
+                        getResources().getDrawable(R.drawable.selectable_item_background));
+                roundedDrawable.setCornerRadii(imageView.getCornerRadius());
+                roundedDrawable.setBorderWidth(1);
+                imageView.setForeground(roundedDrawable.getDrawable());
+            }
+            imageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(v.getContext(), "Clicked", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
         viewHolder.getLoad1Button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

@@ -24,28 +24,38 @@
             android:layout_marginTop="8dp">
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:id="@+id/corner_image_1"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
+                android:clickable="true"
                 app:riv_cornerRadiusLT="8dp"
                 app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_foreground="@drawable/round_corner_fg_selector"
+                app:riv_modifyBackground="true"
                 app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:id="@+id/corner_image_2"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:clickable="true"
                 app:riv_borderColor="@android:color/black"
                 app:riv_borderWidth="2dp"
                 app:riv_cornerRadiusRT="8dp"
                 app:riv_defaultImage="@drawable/abc_ratingbar_full_material"
+                app:riv_foreground="@drawable/round_corner_fg_selector"
+                app:riv_modifyBackground="true"
                 app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:id="@+id/corner_image_3"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:clickable="true"
                 app:riv_borderColor="@android:color/black"
                 app:riv_borderWidth="4dp"
                 app:riv_cornerRadiusRB="8dp"
@@ -53,10 +63,12 @@
                 app:riv_url="http://sipi.usc.edu/database/preview/misc/4.2.01.png"/>
 
             <com.shaubert.ui.remoteimageview.RemoteImageView
+                android:id="@+id/corner_image_4"
                 android:layout_width="64dp"
                 android:layout_height="64dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginStart="8dp"
+                android:clickable="true"
                 app:riv_borderColor="@android:color/black"
                 app:riv_borderWidth="8dp"
                 app:riv_cornerRadiusLB="8dp"

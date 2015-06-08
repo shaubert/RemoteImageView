@@ -326,7 +326,7 @@ public class RoundedImageView extends ImageViewWithForeground {
                 return;
             }
         } else if (!mModifyBackground && mRoundedForegroundDrawable != null) {
-            setupBgDrawable(mForegroundDrawable);
+            setupForegroundDrawable(mForegroundDrawable);
             return;
         }
 

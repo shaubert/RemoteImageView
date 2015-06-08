@@ -7,6 +7,10 @@ import android.widget.ProgressBar;
 import com.shaubert.ui.remoteimageview.RemoteImageView;
 
 public class ActivityMainHolder {
+    private RemoteImageView cornerImage1;
+    private RemoteImageView cornerImage2;
+    private RemoteImageView cornerImage3;
+    private RemoteImageView cornerImage4;
     private RemoteImageView image1;
     private Button load1Button;
     private RemoteImageView image2;
@@ -19,6 +23,10 @@ public class ActivityMainHolder {
     private Button load4Button;
 
     public ActivityMainHolder(Activity activity) {
+        cornerImage1 = (RemoteImageView) activity.findViewById(R.id.corner_image_1);
+        cornerImage2 = (RemoteImageView) activity.findViewById(R.id.corner_image_2);
+        cornerImage3 = (RemoteImageView) activity.findViewById(R.id.corner_image_3);
+        cornerImage4 = (RemoteImageView) activity.findViewById(R.id.corner_image_4);
         image1 = (RemoteImageView) activity.findViewById(R.id.image_1);
         load1Button = (Button) activity.findViewById(R.id.load_1_button);
         image2 = (RemoteImageView) activity.findViewById(R.id.image_2);
@@ -69,5 +77,25 @@ public class ActivityMainHolder {
 
     public View getImage3Error() {
         return image3Error;
+    }
+
+    public RemoteImageView getCornerImage1() {
+        return cornerImage1;
+    }
+
+    public RemoteImageView getCornerImage2() {
+        return cornerImage2;
+    }
+
+    public RemoteImageView getCornerImage3() {
+        return cornerImage3;
+    }
+
+    public RemoteImageView getCornerImage4() {
+        return cornerImage4;
+    }
+
+    public RemoteImageView[] getCornerImages() {
+        return new RemoteImageView[] { cornerImage1, cornerImage2, cornerImage3, cornerImage4 };
     }
 }

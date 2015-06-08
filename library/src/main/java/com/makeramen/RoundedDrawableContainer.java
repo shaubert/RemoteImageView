@@ -68,6 +68,10 @@ public class RoundedDrawableContainer extends AbstractRoundedDrawable {
     @Override
     public void draw(Canvas canvas) {
         Drawable current = drawableContainer.getCurrent();
+        if (current == null) {
+            return;
+        }
+
         RoundedDrawable roundedDrawable = roundedDrawables.get(current);
         if (roundedDrawable == null) {
             roundedDrawable = RoundedDrawablesFactory.wrapDrawable(current);
