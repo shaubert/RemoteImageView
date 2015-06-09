@@ -37,7 +37,7 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
         attachToLifecycle(controller);
     }
 
-    public void setupViews(@NonNull RemoteImageView imageView, @Nullable View takePictureButton, @Nullable View progressView, @Nullable View errorView) {
+    public void setupViews(@Nullable RemoteImageView imageView, @Nullable View takePictureButton, @Nullable View progressView, @Nullable View errorView) {
         if (this.takePictureButton != null) {
             this.takePictureButton.setOnClickListener(null);
         }
@@ -54,14 +54,13 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
             takePictureButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ImagePickerController imagePickerController = getController();
-                    if (imagePickerController.getState() == ImagePickerController.State.EMPTY) {
-                        imagePickerController.showAddDialog();
+                    if (controller.getState() == ImagePickerController.State.EMPTY) {
+                        showAddDialog();
                     } else {
                         if (currentImageIsDefault()) {
-                            imagePickerController.showAddDialog();
+                            showAddDialog();
                         } else {
-                            imagePickerController.showEditDialog();
+                            showEditDialog();
                         }
                     }
                 }
@@ -76,6 +75,18 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
                 }
             });
         }
+    }
+
+    public boolean showEditDialog() {
+        if (controller.getState() != ImagePickerController.State.EMPTY && !currentImageIsDefault()) {
+            controller.showEditDialog();
+            return true;
+        }
+        return false;
+    }
+
+    public void showAddDialog() {
+        controller.showAddDialog();
     }
 
     private void refreshTakePictureButtonVisibility() {
@@ -111,6 +122,10 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
             this.imageView.setListener(null);
         }
         this.imageView = imageView;
+        if (imageView == null) {
+            return;
+        }
+
         imageView.disableOpenOnClick();
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -124,11 +139,11 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
                             }
                         }, 250);
                     } else {
-                        controller.showEditDialog();
+                        showEditDialog();
                     }
                 } else if (!controller.isReadonly()
                         && controller.getState() == ImagePickerController.State.EMPTY) {
-                    controller.showAddDialog();
+                    showAddDialog();
                 }
             }
         });
@@ -162,6 +177,8 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
     private void loadImage(String imageUrl) {
         if (imageView != null) {
             imageView.setImageUrl(imageUrl);
+        } else {
+            controller.onLoadingComplete(imageUrl);
         }
     }
 

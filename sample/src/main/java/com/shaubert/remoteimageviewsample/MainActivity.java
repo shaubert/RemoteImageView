@@ -59,11 +59,11 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         imagePicker1.setDefaultImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.05.png", true);
         imagePicker1.setupViews(viewHolder.getImage3(), viewHolder.getLoad3Button(), viewHolder.getImage3Progress(), viewHolder.getImage3Error());
         imagePicker1.setCompressionOptions(CompressionOptions.newBuilder()
-                        .maxFileSize(1024 * 200)
-                        .targetHeight(512)
-                        .targetWidth(512)
-                        .targetScaleType(ViewScaleType.CROP)
-                        .build());
+                .maxFileSize(1024 * 200)
+                .targetHeight(512)
+                .targetWidth(512)
+                .targetScaleType(ViewScaleType.CROP)
+                .build());
         attachToLifecycle(imagePicker1);
 
         ImagePicker imagePicker2 = new ImagePicker(this, "cropper");
@@ -86,6 +86,36 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         });
         imagePicker2.setPrivatePhotos(true);
         attachToLifecycle(imagePicker2);
+
+        final ImagePicker imagePicker3 = new ImagePicker(this, "picker-3");
+        imagePicker3.setCompressionOptions(CompressionOptions.newBuilder()
+                .maxFileSize(1024 * 200)
+                .targetScaleType(ViewScaleType.CROP)
+                .build());
+        viewHolder.getLoad5Button().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagePicker3.showAddDialog();
+            }
+        });
+        imagePicker3.setListener(new ImagePickerController.ImageListener() {
+            @Override
+            public void onImageTaken(File imageFile) {
+                Toast.makeText(MainActivity.this,
+                            "Image taken: " + imageFile.getName() +
+                            "\nSize: " + imageFile.length() / (1024) + "KB",
+                            Toast.LENGTH_LONG).show();
+            }
+
+            @Override
+            public void onImageLoaded(String imageUri) {
+            }
+
+            @Override
+            public void onImageRemoved() {
+            }
+        });
+        attachToLifecycle(imagePicker3);
     }
 
 }

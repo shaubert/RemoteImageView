@@ -187,5 +187,12 @@
             android:text="Pick and crop image"/>
 
 
+        <Button
+            android:id="@+id/load_5_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="Pick image without view"/>
+
     </LinearLayout>
 </ScrollView>
