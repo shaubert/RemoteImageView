@@ -54,15 +54,7 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
             takePictureButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (controller.getState() == ImagePickerController.State.EMPTY) {
-                        showAddDialog();
-                    } else {
-                        if (currentImageIsDefault()) {
-                            showAddDialog();
-                        } else {
-                            showEditDialog();
-                        }
-                    }
+                    handleTakePictureButtonClick();
                 }
             });
             refreshTakePictureButtonVisibility();
@@ -77,6 +69,18 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
         }
     }
 
+    public void handleTakePictureButtonClick() {
+        if (controller.getState() == ImagePickerController.State.EMPTY) {
+            showAddDialog();
+        } else {
+            if (currentImageIsDefault()) {
+                showAddDialog();
+            } else {
+                showEditDialog();
+            }
+        }
+    }
+
     public boolean showEditDialog() {
         if (controller.getState() != ImagePickerController.State.EMPTY && !currentImageIsDefault()) {
             controller.showEditDialog();
@@ -87,6 +91,22 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
 
     public void showAddDialog() {
         controller.showAddDialog();
+    }
+
+    public void takePhoto() {
+        getController().onTakePhotoClicked();
+    }
+
+    public void pickPicture() {
+        getController().onPickPictureClicked();
+    }
+
+    public void removeImage() {
+        getController().onRemoveImageClicked();
+    }
+
+    public void showImageFullScreen() {
+        getController().showImageFullScreen();
     }
 
     private void refreshTakePictureButtonVisibility() {
