@@ -200,6 +200,7 @@
             android:layout_width="192dp"
             android:layout_height="192dp"
             android:layout_marginTop="24dp"
+            android:scaleType="centerCrop"
             app:riv_foreground="?android:attr/selectableItemBackground"/>
 
         <Button

@@ -13,12 +13,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.ActivityOptionsCompat;
-import android.text.TextUtils;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import com.nostra13.universalimageloader.core.assist.FailReason;
 import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
+import uk.co.senab.photoview.DefaultOnDoubleTapListener;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
 import java.util.List;
@@ -26,7 +27,7 @@ import java.util.List;
 public class ImageViewActivity extends Activity {
 
     public static final String IMAGE_URL_EXTRA = "_image_url_extra";
-    public static final String SCALE_TYPE_EXTRA = "_image_scale_type_extra";
+    public static final ImageView.ScaleType SCALE_TYPE = ImageView.ScaleType.FIT_CENTER;
 
     private ImageView photoView;
 
@@ -34,7 +35,6 @@ public class ImageViewActivity extends Activity {
     private boolean loading = true;
     private Handler handler = new Handler();
     private PhotoViewAttacher photoViewAttacher;
-    private ImageView.ScaleType scaleType;
 
     @Override
     @SuppressLint("NewApi")
@@ -42,14 +42,9 @@ public class ImageViewActivity extends Activity {
         super.onCreate(savedInstanceState);
 
         String imageUrl = getIntent().getStringExtra(IMAGE_URL_EXTRA);
-        String scaleTypeStr = getIntent().getStringExtra(SCALE_TYPE_EXTRA);
-        scaleType = ImageView.ScaleType.CENTER_INSIDE;
-        if (!TextUtils.isEmpty(scaleTypeStr)) {
-            scaleType = ImageView.ScaleType.valueOf(scaleTypeStr);
-        }
 
         photoView = new ImageView(this);
-        photoView.setScaleType(scaleType);
+        photoView.setScaleType(SCALE_TYPE);
         setContentView(photoView,
                 new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
         getWindow().getDecorView().setBackground(new ColorDrawable(Color.BLACK));
@@ -110,7 +105,33 @@ public class ImageViewActivity extends Activity {
         }
 
         photoViewAttacher = new PhotoViewAttacher(photoView);
-        photoViewAttacher.setScaleType(scaleType);
+        photoViewAttacher.setScaleType(SCALE_TYPE);
+        photoViewAttacher.setMinimumScale(0.5f);
+        photoViewAttacher.setOnDoubleTapListener(new DefaultOnDoubleTapListener(photoViewAttacher) {
+            @Override
+            public boolean onDoubleTap(MotionEvent ev) {
+                if (photoViewAttacher == null) {
+                    return false;
+                } else {
+                    try {
+                        float e = photoViewAttacher.getScale();
+                        float x = ev.getX();
+                        float y = ev.getY();
+                        if (e < 1) {
+                            photoViewAttacher.setScale(1, x, y, true);
+                        } else if (e < photoViewAttacher.getMediumScale()) {
+                            photoViewAttacher.setScale(photoViewAttacher.getMediumScale(), x, y, true);
+                        } else if (e >= photoViewAttacher.getMediumScale() && e < photoViewAttacher.getMaximumScale()) {
+                            photoViewAttacher.setScale(photoViewAttacher.getMaximumScale(), x, y, true);
+                        } else {
+                            photoViewAttacher.setScale(1, x, y, true);
+                        }
+                    } catch (ArrayIndexOutOfBoundsException ignored) {
+                    }
+                    return true;
+                }
+            }
+        });
     }
 
     private void disconnectPhotoAttacher() {
@@ -140,7 +161,6 @@ public class ImageViewActivity extends Activity {
                 ActivityOptionsCompat.makeSceneTransitionAnimation(activity, sharedImageView, transitionName);
         Intent intent = new Intent(activity, RemoteImageView.getOpenImageActivityClass());
         intent.putExtra(ImageViewActivity.IMAGE_URL_EXTRA, imageUrl);
-        intent.putExtra(ImageViewActivity.SCALE_TYPE_EXTRA, sharedImageView.getScaleType().name());
         ActivityCompat.startActivity(activity, intent, activityOptions.toBundle());
     }
 

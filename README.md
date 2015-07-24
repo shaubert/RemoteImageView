@@ -8,7 +8,7 @@ ImageView to load images from urls. With optional foreground and round corners. 
         maven{url "https://github.com/shaubert/maven-repo/raw/master/releases"}
     }
     dependencies {
-        compile 'com.shaubert.ui.remoteimageview:library:1.1.7'
+        compile 'com.shaubert.ui.remoteimageview:library:1.1.8'
     }
 
 ## References
