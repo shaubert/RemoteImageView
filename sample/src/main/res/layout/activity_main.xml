@@ -194,5 +194,20 @@
             android:layout_marginTop="24dp"
             android:text="Pick image without view"/>
 
+
+        <com.shaubert.ui.remoteimageview.RemoteImageView
+            android:id="@+id/image_6"
+            android:layout_width="192dp"
+            android:layout_height="192dp"
+            android:layout_marginTop="24dp"
+            app:riv_foreground="?android:attr/selectableItemBackground"/>
+
+        <Button
+            android:id="@+id/load_6_button"
+            android:layout_width="192dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="Pick and crop image (with preset image)"/>
+
     </LinearLayout>
 </ScrollView>

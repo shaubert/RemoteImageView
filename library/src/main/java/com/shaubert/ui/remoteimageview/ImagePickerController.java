@@ -425,6 +425,23 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
     }
 
+    public void setImageFile(File imageFile) {
+        if (this.imageFile == null || !this.imageFile.equals(imageFile)) {
+            removeTempFiles();
+        }
+        if (this.imageFile == imageFile || (this.imageFile != null && this.imageFile.equals(imageFile))) {
+            return;
+        }
+
+        this.imageFile = imageFile;
+        if (imageFile == null) {
+            setState(State.EMPTY);
+        } else {
+            setState(State.LOADING);
+            callback.onImageFileSet(imageFile);
+        }
+    }
+
     public Uri getImageUri() {
         File imageFile = getImageFile();
         if (imageFile != null) {

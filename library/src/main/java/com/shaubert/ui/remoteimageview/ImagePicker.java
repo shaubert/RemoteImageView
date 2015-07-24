@@ -1,5 +1,6 @@
 package com.shaubert.ui.remoteimageview;
 
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -7,7 +8,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.text.TextUtils;
 import android.view.View;
+import com.nostra13.universalimageloader.core.assist.ImageSize;
 import com.nostra13.universalimageloader.core.download.ImageDownloader;
+import com.nostra13.universalimageloader.core.imageaware.ImageAware;
+import com.nostra13.universalimageloader.core.imageaware.ImageViewAware;
+import com.nostra13.universalimageloader.core.listener.SimpleImageLoadingListener;
 import com.shaubert.lifecycle.objects.LifecycleObjectsGroup;
 
 import java.io.File;
@@ -192,6 +197,43 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
             this.imageUrl = imageUrl;
             loadImage(imageUrl);
         }
+    }
+
+    public void setImageUrl(String imageUrl) {
+        if (!TextUtils.equals(this.imageUrl, imageUrl)) {
+            controller.clear();
+            this.imageUrl = imageUrl;
+            if (TextUtils.isEmpty(imageUrl)) {
+                return;
+            }
+
+            File file = RemoteImageView.getImageLoader().getDiskCache().get(imageUrl);
+            if (file != null) {
+                setImageFile(file);
+                return;
+            }
+
+            ImageSize imageSize = null;
+            if (imageView != null) {
+                ImageAware imageAware = new ImageViewAware(imageView, true);
+                imageSize = new ImageSize(imageAware.getWidth(), imageAware.getHeight());
+            }
+            RemoteImageView.getImageLoader().loadImage(imageUrl, imageSize, new SimpleImageLoadingListener() {
+                @Override
+                public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
+                    if (TextUtils.equals(ImagePicker.this.imageUrl, imageUri)) {
+                        File file = RemoteImageView.getImageLoader().getDiskCache().get(imageUri);
+                        if (file != null) {
+                            setImageFile(file);
+                        }
+                    }
+                }
+            });
+        }
+    }
+
+    public void setImageFile(File imageFile) {
+        controller.setImageFile(imageFile);
     }
 
     private void loadImage(String imageUrl) {

@@ -22,6 +22,8 @@ public class ActivityMainHolder {
     private RemoteImageView image4;
     private Button load4Button;
     private Button load5Button;
+    private RemoteImageView image6;
+    private Button load6Button;
 
     public ActivityMainHolder(Activity activity) {
         cornerImage1 = (RemoteImageView) activity.findViewById(R.id.corner_image_1);
@@ -39,6 +41,8 @@ public class ActivityMainHolder {
         image4 = (RemoteImageView) activity.findViewById(R.id.image_4);
         load4Button = (Button) activity.findViewById(R.id.load_4_button);
         load5Button = (Button) activity.findViewById(R.id.load_5_button);
+        image6 = (RemoteImageView) activity.findViewById(R.id.image_6);
+        load6Button = (Button) activity.findViewById(R.id.load_6_button);
     }
 
     public RemoteImageView getImage2() {
@@ -83,6 +87,14 @@ public class ActivityMainHolder {
 
     public Button getLoad5Button() {
         return load5Button;
+    }
+
+    public RemoteImageView getImage6() {
+        return image6;
+    }
+
+    public Button getLoad6Button() {
+        return load6Button;
     }
 
     public RemoteImageView getCornerImage1() {

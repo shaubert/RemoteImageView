@@ -102,9 +102,9 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
             @Override
             public void onImageTaken(File imageFile) {
                 Toast.makeText(MainActivity.this,
-                            "Image taken: " + imageFile.getName() +
-                            "\nSize: " + imageFile.length() / (1024) + "KB",
-                            Toast.LENGTH_LONG).show();
+                        "Image taken: " + imageFile.getName() +
+                                "\nSize: " + imageFile.length() / (1024) + "KB",
+                        Toast.LENGTH_LONG).show();
             }
 
             @Override
@@ -116,6 +116,13 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
             }
         });
         attachToLifecycle(imagePicker3);
+
+
+        ImagePicker imagePicker4 = new ImagePicker(this, "cropper");
+        imagePicker4.setupViews(viewHolder.getImage6(), viewHolder.getLoad6Button(), null, null);
+        imagePicker4.setPrivatePhotos(true);
+        imagePicker4.setImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.06.png");
+        attachToLifecycle(imagePicker4);
     }
 
 }
