@@ -53,6 +53,9 @@ public class ImagePickerController extends LifecycleBasedObject {
     private static final String CURRENT_IMAGE_FILE = "current_image_file_extra";
     private static final String STATE = "state_extra";
     public static final String WAITING_FOR_ACTIVITY_RESULT = "waiting_for_activity_result";
+    public static final String USER_PICKED_IMAGE = "user_picked_image";
+
+    public static final String RIV_TEMP_DIR_NAME = "riv-temp";
 
     private final int REQUEST_CROP = 6709;
     private final int REQUEST_PICK = 9162;
@@ -71,11 +74,13 @@ public class ImagePickerController extends LifecycleBasedObject {
     private Fragment fragment;
     private FragmentActivity fragmentActivity;
 
+    private boolean userPickedImage;
     private File imageFile;
     private File tempImageOutput;
 
     private ImageListener listener;
     private Callback callback;
+    private String tag;
     private CropCallback cropCallback;
     private boolean privatePhotos;
 
@@ -88,18 +93,19 @@ public class ImagePickerController extends LifecycleBasedObject {
     private ListDialogManager editNotLoadedImageDialog;
     private ListDialogManager addImageDialog;
 
-    public ImagePickerController(@NonNull FragmentActivity fragmentActivity, @NonNull Callback callback) {
-        this(null, fragmentActivity, callback);
+    public ImagePickerController(@NonNull FragmentActivity fragmentActivity, @NonNull Callback callback, String tag) {
+        this(null, fragmentActivity, callback, tag);
     }
 
-    public ImagePickerController(@NonNull Fragment fragment, @NonNull Callback callback) {
-        this(fragment, null, callback);
+    public ImagePickerController(@NonNull Fragment fragment, @NonNull Callback callback, String tag) {
+        this(fragment, null, callback, tag);
     }
 
-    private ImagePickerController(Fragment fragment, FragmentActivity activity, @NonNull Callback callback) {
+    private ImagePickerController(Fragment fragment, FragmentActivity activity, @NonNull Callback callback, String tag) {
         this.fragment = fragment;
         this.fragmentActivity = activity;
         this.callback = callback;
+        this.tag = tag;
 
         state = State.EMPTY;
 
@@ -147,6 +153,11 @@ public class ImagePickerController extends LifecycleBasedObject {
                 new EditAction[] {editActions[1], editActions[2]},
                 "add-image-dialog"
         );
+    }
+
+    @Override
+    protected String getBundleTag() {
+        return super.getBundleTag() + tag;
     }
 
     public FragmentActivity getActivity() {
@@ -214,16 +225,23 @@ public class ImagePickerController extends LifecycleBasedObject {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static File generateTempFile(Context context) {
-        File photosDir = StorageUtils.getCacheDirectory(context);
-        if (photosDir != null) {
-            if (photosDir.exists() || photosDir.mkdirs()) {
-                return new File(photosDir, UUID.randomUUID().toString());
-            } else {
-                return null;
-            }
+        File tempRoot = getTempRoot(context);
+        if (tempRoot != null) {
+            return new File(tempRoot, UUID.randomUUID().toString());
         } else {
             return null;
         }
+    }
+
+    public static File getTempRoot(Context context) {
+        File photosDir = StorageUtils.getCacheDirectory(context);
+        if (photosDir != null) {
+            File innerDir = new File(photosDir, RIV_TEMP_DIR_NAME);
+            if (innerDir.exists() || innerDir.mkdirs()) {
+                return innerDir;
+            }
+        }
+        return null;
     }
 
     public File generatePublicTempFile() {
@@ -286,14 +304,14 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public static boolean isTempFile(Context context, File file) {
-        File photosDir = StorageUtils.getCacheDirectory(context);
-        if (file == null || photosDir == null) return false;
-        return file.getAbsolutePath().contains(photosDir.getAbsolutePath());
+        File tempRoot = getTempRoot(context);
+        if (file == null || tempRoot == null) return false;
+        return file.getAbsolutePath().contains(tempRoot.getAbsolutePath());
     }
 
     public static boolean isPublicFile(File file) {
-        if (file == null) return false;
         File photosDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        if (photosDir == null || file == null) return false;
         return file.getAbsolutePath().contains(photosDir.getAbsolutePath());
     }
 
@@ -307,15 +325,19 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
         waitingForActivityResult = stateBundle.getBoolean(WAITING_FOR_ACTIVITY_RESULT, false);
 
+        state = Enums.fromBundle(State.class, stateBundle, STATE);
+
         String imagePath = stateBundle.getString(CURRENT_IMAGE_FILE);
         if (!TextUtils.isEmpty(imagePath)) {
             imageFile = new File(imagePath);
+            userPickedImage = stateBundle.getBoolean(USER_PICKED_IMAGE, false);
             callback.onImageFileSet(imageFile);
+        } else {
+            imageFile = null;
+            userPickedImage = false;
+            callback.onImageFileSet(null);
         }
 
-        if (state != State.ERROR) {
-            state = Enums.fromBundle(State.class, stateBundle, STATE);
-        }
         setState(state);
     }
 
@@ -325,7 +347,10 @@ public class ImagePickerController extends LifecycleBasedObject {
             outState.putString(TEMP_IMAGE_OUTPUT_FILE_NAME, tempImageOutput.getAbsolutePath());
         }
         Enums.toBundle(state, outState, STATE);
-        outState.putString(CURRENT_IMAGE_FILE, imageFile != null ? imageFile.getAbsolutePath() : null);
+        if (imageFile != null) {
+            outState.putString(CURRENT_IMAGE_FILE, imageFile.getAbsolutePath());
+            outState.putBoolean(USER_PICKED_IMAGE, userPickedImage);
+        }
         outState.putBoolean(WAITING_FOR_ACTIVITY_RESULT, waitingForActivityResult);
     }
 
@@ -333,25 +358,27 @@ public class ImagePickerController extends LifecycleBasedObject {
         return new SimpleImageLoadingListener() {
             @Override
             public void onLoadingFailed(String imageUri, View view, FailReason failReason) {
-                if (imageFile == null) return;
-                ImagePickerController.this.onLoadingFailed();
+                ImagePickerController.this.onLoadingFailed(imageUri);
             }
 
             @Override
             public void onLoadingStarted(String imageUri, View view) {
-                if (imageFile == null) return;
-                ImagePickerController.this.onLoadingStarted();
+                ImagePickerController.this.onLoadingStarted(imageUri);
             }
 
             @Override
             public void onLoadingComplete(String imageUri, View view, Bitmap loadedImage) {
-                if (imageFile == null) return;
                 ImagePickerController.this.onLoadingComplete(imageUri);
             }
         };
     }
 
-    public void onLoadingFailed() {
+    public void onLoadingFailed(String imageUri) {
+        if (imageFile == null) return;
+        if (!ImageDownloader.Scheme.FILE.wrap(imageFile.getAbsolutePath()).equals(imageUri)) {
+            return;
+        }
+
         if (state == State.PROCESSING) {
             setState(State.EMPTY);
             showLoadingError();
@@ -360,13 +387,23 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
     }
 
-    public void onLoadingStarted() {
+    public void onLoadingStarted(String imageUri) {
+        if (imageFile == null) return;
+        if (!ImageDownloader.Scheme.FILE.wrap(imageFile.getAbsolutePath()).equals(imageUri)) {
+            return;
+        }
+
         if (state != State.PROCESSING) {
             setState(State.LOADING);
         }
     }
 
     public void onLoadingComplete(String imageUri) {
+        if (imageFile == null) return;
+        if (!ImageDownloader.Scheme.FILE.wrap(imageFile.getAbsolutePath()).equals(imageUri)) {
+            return;
+        }
+
         State oldState = state;
         setState(State.WITH_IMAGE);
         if (listener != null) {
@@ -412,6 +449,7 @@ public class ImagePickerController extends LifecycleBasedObject {
         if (isTempFile(imageFile)) {
             imageFile.delete();
             imageFile = null;
+            userPickedImage = false;
             setState(State.EMPTY);
             callback.onImageFileSet(null);
         }
@@ -434,6 +472,7 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
 
         this.imageFile = imageFile;
+        userPickedImage = false;
         if (imageFile == null) {
             setState(State.EMPTY);
         } else {
@@ -466,8 +505,7 @@ public class ImagePickerController extends LifecycleBasedObject {
 
     public boolean hasUserImage() {
         if (state == State.WITH_IMAGE) {
-            File imageFile = getImageFile();
-            return isTempFile(imageFile);
+            return userPickedImage;
         } else {
             return false;
         }
@@ -538,6 +576,7 @@ public class ImagePickerController extends LifecycleBasedObject {
         removeTempFiles();
         if (imageFile != null) {
             imageFile = null;
+            userPickedImage = false;
             setState(State.EMPTY);
             callback.onImageFileSet(null);
         }
@@ -795,6 +834,7 @@ public class ImagePickerController extends LifecycleBasedObject {
             this.imageFile.delete();
         }
         this.imageFile = imageFile;
+        userPickedImage = true;
         callback.onImageFileSet(imageFile);
     }
 

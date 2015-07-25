@@ -56,7 +56,7 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         });
 
         ImagePicker imagePicker1 = new ImagePicker(this, "picker");
-        imagePicker1.setDefaultImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.05.png", true);
+        imagePicker1.setDefaultImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.05.png");
         imagePicker1.setupViews(viewHolder.getImage3(), viewHolder.getLoad3Button(), viewHolder.getImage3Progress(), viewHolder.getImage3Error());
         imagePicker1.setCompressionOptions(CompressionOptions.newBuilder()
                 .maxFileSize(1024 * 200)
@@ -118,7 +118,7 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         attachToLifecycle(imagePicker3);
 
 
-        ImagePicker imagePicker4 = new ImagePicker(this, "cropper");
+        ImagePicker imagePicker4 = new ImagePicker(this, "picker-4");
         imagePicker4.setupViews(viewHolder.getImage6(), viewHolder.getLoad6Button(), null, null);
         imagePicker4.setPrivatePhotos(true);
         imagePicker4.setImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.06.png");

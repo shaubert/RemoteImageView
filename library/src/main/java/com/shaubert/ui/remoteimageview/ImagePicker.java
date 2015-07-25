@@ -32,13 +32,13 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
 
     public ImagePicker(@NonNull Fragment fragment, @NonNull String tag) {
         this.tag = tag;
-        controller = new ImagePickerController(fragment, this);
+        controller = new ImagePickerController(fragment, this, tag);
         attachToLifecycle(controller);
     }
 
     public ImagePicker(@NonNull FragmentActivity fragmentActivity, @NonNull String tag) {
         this.tag = tag;
-        controller = new ImagePickerController(fragmentActivity, this);
+        controller = new ImagePickerController(fragmentActivity, this, tag);
         attachToLifecycle(controller);
     }
 
@@ -173,15 +173,15 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
             }
         });
         imageView.setListener(controller.createSimpleImageLoadingListener());
-        if (hasDefaultImageUrl()) {
+        if (!TextUtils.isEmpty(defaultImageUrl)) {
             loadImage(defaultImageUrl);
         }
         onStateChanged(controller.getState());
     }
 
-    public void setDefaultImageUrl(String imageUrl, boolean startLoad) {
+    public void setDefaultImageUrl(String imageUrl) {
         defaultImageUrl = imageUrl;
-        if (startLoad) {
+        if (!hasImage()) {
             loadImage(imageUrl);
         }
     }
@@ -238,14 +238,14 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
 
     private void loadImage(String imageUrl) {
         if (imageView != null) {
-            imageView.setImageUrl(imageUrl);
+            if (TextUtils.equals(imageView.getImageUrl(), imageUrl)) {
+                controller.onLoadingComplete(imageUrl);
+            } else {
+                imageView.setImageUrl(imageUrl);
+            }
         } else {
             controller.onLoadingComplete(imageUrl);
         }
-    }
-
-    public boolean currentImageIsDefault() {
-        return !hasImage() && hasDefaultImageUrl();
     }
 
     public void clear() {
@@ -303,8 +303,8 @@ public class ImagePicker extends LifecycleObjectsGroup implements ImagePickerCon
         return imageUrl;
     }
 
-    public boolean hasDefaultImageUrl() {
-        return !TextUtils.isEmpty(defaultImageUrl);
+    public boolean currentImageIsDefault() {
+        return !hasImage() && !TextUtils.isEmpty(defaultImageUrl);
     }
 
     public String getDefaultImageUrl() {
