@@ -5,7 +5,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.ExifInterface;
@@ -282,11 +283,9 @@ public class ImagePickerController extends LifecycleBasedObject {
         }
 
         try {
-            Context otherAppContext = context.createPackageContext(context.getPackageName(), Context.CONTEXT_IGNORE_SECURITY);
-            Configuration conf = context.getResources().getConfiguration();
-            conf.locale = new Locale("en");
-            otherAppContext.getResources().updateConfiguration(conf, otherAppContext.getResources().getDisplayMetrics());
-            CharSequence label = otherAppContext.getApplicationInfo().loadLabel(otherAppContext.getPackageManager());
+            ApplicationInfo applicationInfo = context.getPackageManager().getApplicationInfo(
+                    context.getPackageName(), PackageManager.GET_META_DATA);
+            CharSequence label = applicationInfo.nonLocalizedLabel;
             if (label != null) {
                 String name = FILE_NAME_PATTERN.matcher(label).replaceAll("");
                 if (TextUtils.equals(".", name) || TextUtils.equals("..", name)) {
