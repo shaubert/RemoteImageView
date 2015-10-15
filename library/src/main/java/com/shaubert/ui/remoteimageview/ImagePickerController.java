@@ -74,6 +74,7 @@ public class ImagePickerController extends LifecycleBasedObject {
 
     private Fragment fragment;
     private FragmentActivity fragmentActivity;
+    private Context appContext;
 
     private boolean userPickedImage;
     private File imageFile;
@@ -110,27 +111,27 @@ public class ImagePickerController extends LifecycleBasedObject {
 
         state = State.EMPTY;
 
-        Context context = getActivity();
+        appContext = getActivity().getApplicationContext();
         final EditAction[] editActions = new EditAction[] {
-            new EditAction(context.getString(R.string.riv_image_edit_dialog_option_open), new Runnable() {
+            new EditAction(appContext.getString(R.string.riv_image_edit_dialog_option_open), new Runnable() {
                 @Override
                 public void run() {
                     showImageFullScreen();
                 }
             }),
-            new EditAction(context.getString(R.string.riv_image_edit_dialog_option_take_photo), new Runnable() {
+            new EditAction(appContext.getString(R.string.riv_image_edit_dialog_option_take_photo), new Runnable() {
                 @Override
                 public void run() {
                     onTakePhotoClicked();
                 }
             }),
-            new EditAction(context.getString(R.string.riv_image_edit_dialog_option_choose_picture), new Runnable() {
+            new EditAction(appContext.getString(R.string.riv_image_edit_dialog_option_choose_picture), new Runnable() {
                 @Override
                 public void run() {
                     onPickPictureClicked();
                 }
             }),
-            new EditAction(context.getString(R.string.riv_image_edit_dialog_option_remove), new Runnable() {
+            new EditAction(appContext.getString(R.string.riv_image_edit_dialog_option_remove), new Runnable() {
                 @Override
                 public void run() {
                     onRemoveImageClicked();
@@ -195,11 +196,11 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public File generateTempFileOrShowError() {
-        return generateTempFileOrShowError(getActivity());
+        return generateTempFileOrShowError(appContext);
     }
 
     public File generatePublicTempFileOrShowError() {
-        return generatePublicTempFileOrShowError(getActivity());
+        return generatePublicTempFileOrShowError(appContext);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -221,7 +222,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public File generateTempFile() {
-        return generateTempFile(getActivity());
+        return generateTempFile(appContext);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -246,7 +247,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public File generatePublicTempFile() {
-        return generatePublicTempFile(getActivity());
+        return generatePublicTempFile(appContext);
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
@@ -299,7 +300,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public boolean isTempFile(File file) {
-        return isTempFile(getActivity(), file);
+        return isTempFile(appContext, file);
     }
 
     public static boolean isTempFile(Context context, File file) {
@@ -544,7 +545,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public void onPickPictureClicked() {
-        startActivityForResult(getPickImageIntent(getActivity()), REQUEST_PICK);
+        startActivityForResult(getPickImageIntent(appContext), REQUEST_PICK);
     }
 
     private void startActivityForResult(Intent intent, int requestCode) {
@@ -684,7 +685,7 @@ public class ImagePickerController extends LifecycleBasedObject {
             imageFile = tempImageOutput;
         }
         if (!privatePhotos && imageFile != null) {
-            MediaScannerConnection.scanFile(getActivity(),
+            MediaScannerConnection.scanFile(appContext,
                     new String[] { imageFile.getAbsolutePath() }, new String[] {"image/jpeg"}, null);
         }
         processResultImage(imageFile);
@@ -693,7 +694,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     private File getFileFromIntentResult(Uri resultUri, boolean copyAndRemoveSource) {
         if (resultUri == null) return null;
 
-        String path = Files.getPath(getActivity(), resultUri);
+        String path = Files.getPath(appContext, resultUri);
         if (TextUtils.isEmpty(path)) {
             showFileReadingError();
         } else {
@@ -764,7 +765,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     private void startCrop(CropOptions cropOptions) {
-        Intent intent = new Intent(getActivity(), RemoteImageView.getCropImageActivityClass());
+        Intent intent = new Intent(appContext, RemoteImageView.getCropImageActivityClass());
         intent.putExtras(CropImageActivity.buildCropImageExtras(cropOptions));
         startActivityForResult(intent, REQUEST_CROP);
     }
@@ -777,7 +778,7 @@ public class ImagePickerController extends LifecycleBasedObject {
             return;
         }
 
-        String inPath = Files.getPath(getActivity(), cropOptions.getInUri());
+        String inPath = Files.getPath(appContext, cropOptions.getInUri());
         if (!TextUtils.isEmpty(inPath)) {
             File inFile = new File(inPath);
             if (isTempFile(inFile)) {
@@ -786,7 +787,7 @@ public class ImagePickerController extends LifecycleBasedObject {
             }
         }
 
-        String outPath = Files.getPath(getActivity(), cropOptions.getOutUri());
+        String outPath = Files.getPath(appContext, cropOptions.getOutUri());
         if (!TextUtils.isEmpty(outPath)) {
             File croppedImageFile = new File(outPath);
             processImage(croppedImageFile, true);
@@ -915,7 +916,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public void showProcessingError() {
-        showProcessingError(getActivity());
+        showProcessingError(appContext);
     }
 
     public static void showProcessingError(Context context) {
@@ -923,7 +924,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public void showLoadingError() {
-        showLoadingError(getActivity());
+        showLoadingError(appContext);
     }
 
     public static void showLoadingError(Context context) {
@@ -931,7 +932,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public void showStorageError() {
-        showStorageError(getActivity());
+        showStorageError(appContext);
     }
 
     public static void showStorageError(Context context) {
@@ -939,7 +940,7 @@ public class ImagePickerController extends LifecycleBasedObject {
     }
 
     public void showFileReadingError() {
-        showFileReadingError(getActivity());
+        showFileReadingError(appContext);
     }
 
     public static void showFileReadingError(Context context) {
