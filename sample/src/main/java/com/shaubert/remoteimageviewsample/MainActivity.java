@@ -1,5 +1,6 @@
 package com.shaubert.remoteimageviewsample;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.view.View;
@@ -18,6 +19,8 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
     private ActivityMainHolder viewHolder;
 
     @Override
+    @SuppressWarnings("deprecation")
+    @SuppressLint("NewApi")
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -43,7 +46,7 @@ public class MainActivity extends LifecycleDispatcherActionBarActivity {
         viewHolder.getLoad1Button().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                viewHolder.getImage1().setDefaultImage(R.drawable.abc_btn_rating_star_on_mtrl_alpha);
+                viewHolder.getImage1().setDefaultImage(R.mipmap.ic_launcher);
                 viewHolder.getImage1().setImageUrl("http://sipi.usc.edu/database/preview/misc/4.2.03.png");
             }
         });

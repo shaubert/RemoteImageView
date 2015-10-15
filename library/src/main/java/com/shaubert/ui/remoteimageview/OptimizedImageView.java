@@ -1,5 +1,6 @@
 package com.shaubert.ui.remoteimageview;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.AttributeSet;
 import android.view.ViewGroup;
@@ -36,6 +37,7 @@ public class OptimizedImageView extends RoundedImageView {
     }
 
     @Override
+    @SuppressLint("MissingSuperCall")
     public void requestLayout() {
         if (!fixedSizeOptimizationEnabled || shouldBeLayouted) {
             callRequestLayout();

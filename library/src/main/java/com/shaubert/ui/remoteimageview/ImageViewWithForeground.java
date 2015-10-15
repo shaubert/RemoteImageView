@@ -63,12 +63,16 @@ public class ImageViewWithForeground extends ImageView {
         a.recycle();
     }
 
+    @Override
     public int getForegroundGravity() {
         return mForegroundGravity;
     }
 
+    @Override
     public void setForegroundGravity(int foregroundGravity) {
         if (mForegroundGravity != foregroundGravity) {
+            mForegroundBoundsChanged = true;
+
             if ((foregroundGravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) == 0) {
                 foregroundGravity |= Gravity.START;
             }
@@ -78,7 +82,6 @@ public class ImageViewWithForeground extends ImageView {
             }
 
             mForegroundGravity = foregroundGravity;
-            mForegroundBoundsChanged = true;
             requestLayout();
         }
     }
@@ -96,6 +99,7 @@ public class ImageViewWithForeground extends ImageView {
         }
     }
 
+    @Override
     public void setForeground(Drawable drawable) {
         if (mForeground != drawable) {
             if (mForeground != null) {
@@ -117,6 +121,7 @@ public class ImageViewWithForeground extends ImageView {
         }
     }
 
+    @Override
     public Drawable getForeground() {
         return mForeground;
     }
